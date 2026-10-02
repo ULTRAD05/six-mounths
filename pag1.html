@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Mi Historia</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            width: 100%;
+            height: 100vh;
+
+            overflow: hidden;
+
+            background: black;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            color: white;
+        }
+
+
+        /* ==================================
+           VIDEO DE FONDO
+        ================================== */
+
+        .fondo {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            z-index: -3;
+        }
+
+
+        /* ==================================
+           OSCURECER VIDEO
+        ================================== */
+
+        .oscuro {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background:
+                rgba(0, 0, 0, 0.38);
+
+            z-index: -2;
+        }
+
+
+        /* ==================================
+           ESCENA
+        ================================== */
+
+        .escena {
+
+            width: 100%;
+            height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            position: relative;
+
+            padding: 40px;
+        }
+
+
+        /* ==================================
+           TITULO
+        ================================== */
+
+        .titulo {
+
+            position: absolute;
+
+            top: 45px;
+
+            left: 0;
+
+            width: 100%;
+
+            font-size: 38px;
+
+            letter-spacing: 5px;
+
+            text-transform: uppercase;
+
+            text-shadow:
+                0 3px 10px black,
+                0 0 20px black;
+
+            transition: 0.5s;
+        }
+
+
+        /* ==================================
+           MENSAJE
+        ================================== */
+
+        .mensaje {
+
+            width: 900px;
+
+            max-width: 90%;
+
+            background: transparent;
+
+            border: none;
+
+            font-size: 28px;
+
+            line-height: 1.65;
+
+            text-align: center;
+
+            color: white;
+
+            text-shadow:
+                0 3px 10px black,
+                0 0 20px black;
+
+            opacity: 0;
+        }
+
+
+        /* ==================================
+           BOTÓN CONTINUAR
+        ================================== */
+
+        .boton-siguiente {
+
+            position: fixed;
+
+            bottom: 45px;
+
+            right: 45px;
+
+            padding: 14px 32px;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 17px;
+
+            letter-spacing: 2px;
+
+            color: white;
+
+            background:
+                rgba(0, 0, 0, 0.30);
+
+            border: 1px solid
+                rgba(255, 255, 255, 0.75);
+
+            border-radius: 50px;
+
+            backdrop-filter: blur(8px);
+
+            cursor: pointer;
+
+            transition:
+                opacity 0.5s ease,
+                transform 0.35s ease,
+                background 0.35s ease,
+                box-shadow 0.35s ease;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0, 0, 0, 0.5);
+        }
+
+
+        /* ==================================
+           BOTÓN VISIBLE
+        ================================== */
+
+        .boton-siguiente.mostrar {
+
+            opacity: 1;
+
+            pointer-events: auto;
+
+            animation:
+                pulso 2.5s infinite;
+        }
+
+
+        /* ==================================
+           BOTÓN HOVER
+        ================================== */
+
+        .boton-siguiente:hover {
+
+            background:
+                rgba(255, 255, 255, 0.14);
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 8px 30px
+                rgba(255, 255, 255, 0.18);
+        }
+
+
+        .boton-siguiente:active {
+
+            transform:
+                scale(0.94);
+        }
+
+
+        /* ==================================
+           PEQUEÑO BRILLO DEL BOTÓN
+        ================================== */
+
+        @keyframes pulso {
+
+            0% {
+
+                box-shadow:
+                    0 5px 25px
+                    rgba(0, 0, 0, 0.5);
+            }
+
+            50% {
+
+                box-shadow:
+                    0 5px 30px
+                    rgba(255, 255, 255, 0.18);
+            }
+
+            100% {
+
+                box-shadow:
+                    0 5px 25px
+                    rgba(0, 0, 0, 0.5);
+            }
+        }
+
+
+        /* ==================================
+           ANIMACIÓN APARECER
+        ================================== */
+
+        @keyframes aparecer {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(30px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        /* ==================================
+           ANIMACIÓN DESAPARECER
+        ================================== */
+
+        @keyframes desaparecer {
+
+            from {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+
+            to {
+
+                opacity: 0;
+
+                transform:
+                    translateY(-30px);
+            }
+        }
+
+
+        /* ==================================
+           FINAL
+        ================================== */
+
+        .final {
+
+            display: none;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 30px;
+        }
+
+
+        .final h1 {
+
+            font-size: 75px;
+
+            letter-spacing: 12px;
+
+            text-shadow:
+                0 5px 20px black;
+
+            animation:
+                aparecer 2s ease forwards;
+        }
+
+
+        /* ==================================
+           BOTÓN FINAL
+        ================================== */
+
+        .boton-final {
+
+            padding: 15px 40px;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 18px;
+
+            letter-spacing: 1px;
+
+            color: white;
+
+            background:
+                rgba(0, 0, 0, 0.30);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.8);
+
+            border-radius: 40px;
+
+            cursor: pointer;
+
+            backdrop-filter: blur(6px);
+
+            transition: 0.35s;
+
+            animation:
+                aparecer 2s ease 0.5s both;
+        }
+
+
+        .boton-final:hover {
+
+            background:
+                rgba(255, 255, 255, 0.15);
+
+            transform:
+                scale(1.08);
+
+            box-shadow:
+                0 8px 30px
+                rgba(255, 255, 255, 0.15);
+        }
+
+
+        /* ==================================
+           CELULAR
+        ================================== */
+
+        @media(max-width:700px) {
+
+            .escena {
+
+                padding: 25px;
+            }
+
+
+            .titulo {
+
+                font-size: 25px;
+
+                top: 30px;
+
+                letter-spacing: 3px;
+            }
+
+
+            .mensaje {
+
+                font-size: 21px;
+
+                line-height: 1.55;
+
+                max-width: 88%;
+            }
+
+
+            .boton-siguiente {
+
+                bottom: 25px;
+
+                right: 50%;
+
+                transform:
+                    translateX(50%);
+
+                font-size: 16px;
+
+                padding:
+                    12px 26px;
+            }
+
+
+            .boton-siguiente:hover {
+
+                transform:
+                    translateX(50%)
+                    translateY(-4px);
+            }
+
+
+            .final h1 {
+
+                font-size: 50px;
+
+                letter-spacing: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==================================
+         VIDEO DE FONDO
+    ================================== -->
+
+    <video
+        class="fondo"
+        autoplay
+        muted
+        loop
+        playsinline>
+
+        <source
+            src="2026-08-04 21-41-16.mp4"
+            type="video/mp4">
+
+    </video>
+
+
+    <!-- ==================================
+         AUDIO
+         SOLO PARA ESTA PÁGINA
+    ================================== -->
+
+    <audio
+        id="musica"
+        loop
+        preload="auto">
+
+        <source
+            src="musica para dormir en 30 segundos,musica ambiental 30 segundos,musica corta relajante,relajarse.mp3"
+            type="audio/mpeg">
+
+    </audio>
+
+
+    <div class="oscuro"></div>
+
+
+    <!-- ==================================
+         ESCENA PRINCIPAL
+    ================================== -->
+
+    <main class="escena">
+
+
+        <h1
+            class="titulo"
+            id="titulo">
+
+            Para ti
+
+        </h1>
+
+
+        <!-- MENSAJE -->
+
+        <div
+            class="mensaje"
+            id="mensaje">
+
+        </div>
+
+
+        <!-- ==================================
+             BOTÓN SIGUIENTE
+        ================================== -->
+
+        <button
+            class="boton-siguiente"
+            id="botonSiguiente"
+            onclick="siguienteMensaje()">
+
+            Continuar →
+
+        </button>
+
+
+        <!-- ==================================
+             FINAL
+        ================================== -->
+
+        <div
+            class="final"
+            id="final">
+
+            <h1>
+                FIN
+            </h1>
+
+
+            <button
+                class="boton-final"
+                onclick="irSiguientePagina()">
+
+                Continuar historia →
+
+            </button>
+
+        </div>
+
+
+    </main>
+
+
+    <script>
+
+
+        /* ==================================
+           AUDIO
+        ================================== */
+
+        const musica =
+            document.getElementById("musica");
+
+
+        /*
+            Volumen al 30%.
+        */
+
+        musica.volume = 0.3;
+
+
+        /*
+            Iniciar música.
+        */
+
+        function iniciarMusica() {
+
+            if (musica.paused) {
+
+                musica.volume = 0.3;
+
+                musica.play().catch(function(error) {
+
+                    console.log(
+                        "El navegador bloqueó el audio:",
+                        error
+                    );
+
+                });
+
+            }
+
+        }
+
+
+        /*
+            El primer clic en cualquier
+            parte de la página inicia
+            la música.
+
+            Después de iniciar,
+            eliminamos este evento.
+        */
+
+        document.addEventListener(
+            "click",
+            iniciarMusica,
+            {
+                once: true
+            }
+        );
+
+
+        /* ==================================
+           HISTORIA
+        ================================== */
+
+        const historia = [
+
+            {
+
+                titulo: "Para ti",
+
+                mensajes: [
+
+                    {
+                        texto:
+                        "Si algún día me preguntaran cuál ha sido mi lugar favorito en este mundo, probablemente no diría un país, una ciudad ni un lugar… diría tú. 🥹❤️"
+                    },
+
+                    {
+                        texto:
+                        "Porque mi lugar favorito no es donde estoy, sino donde está la persona que hace que mi corazón se sienta en casa. 🏡💗"
+                    },
+
+                    {
+                        texto:
+                        "Y qué bonito se siente saber que, entre millones de personas, entre tantos caminos y tantas historias, la vida decidió cruzar la mía contigo. 🥺🌎✨"
+                    },
+
+                    {
+                        texto:
+                        "No sé en qué momento empezaste a significar tanto para mí… 🥹💞 Quizá fue con aquella primera conversación, con una de tus sonrisas, con alguna de tus ocurrencias o simplemente con esa manera tan tuya de hacer especial un momento cualquiera. 🫶🏻🌷"
+                    },
+
+                    {
+                        texto:
+                        "Pero un día me di cuenta de algo: ya no eras solamente alguien que conocía… eras alguien que mi corazón había empezado a elegir. ❤️‍🩹🫀"
+                    },
+
+                    {
+                        texto:
+                        "Y desde entonces, hay cosas que inevitablemente me hacen pensar en ti. 🌙🎶💭 Una canción, una fecha, una palabra, una fotografía o una conversación a altas horas de la noche… cualquier pequeño detalle puede hacer que aparezcas en mis pensamientos."
+                    },
+
+                    {
+                        texto:
+                        "Y sin darme cuenta, termino sonriendo como un tonto. 🥹😂❤️ Porque así eres tú para mí: ese pensamiento bonito que aparece de repente y hace que todo se sienta un poquito más especial. ✨💗"
+                    },
+
+                    {
+                        texto:
+                        "Te amo por tantas razones que probablemente podría escribir páginas enteras y todavía me faltarían palabras. 🥺❤️"
+                    },
+
+                    {
+                        texto:
+                        "Te amo por quien eres, por tu forma de ser, por tus detalles, por tus ocurrencias y por esas pequeñas cosas que quizá tú ni siquiera notas, pero que para mí tienen un valor enorme. 🫶🏻💘"
+                    },
+
+                    {
+                        texto:
+                        "Te amo por las veces que me has hecho sonreír sin siquiera intentarlo, por los recuerdos que hemos creado y por todos esos momentos que mi corazón guarda como pequeños tesoros. 🥹💎❤️"
+                    },
+
+                    {
+                        texto:
+                        "Y no quiero un amor perfecto, porque sé que eso no existe. 🌷❤️ Quiero un amor real."
+                    },
+
+                    {
+                        texto:
+                        "Uno donde podamos reírnos hasta que nos duela el estómago 😂💕, hablar durante horas de cualquier tontería 🌙📱, apoyarnos cuando las cosas no salgan bien 🫂❤️‍🩹 y celebrar nuestros logros juntos. 🎉🥰"
+                    },
+
+                    {
+                        texto:
+                        "Quiero ese tipo de amor donde incluso los días normales se sientan especiales solamente porque estamos juntos. 🥹✨"
+                    },
+
+                    {
+                        texto:
+                        "Porque si me dieran a elegir entre conocer a miles de personas o volver a encontrarte a ti una y otra vez… creo que mi corazón siempre sabría qué elegir. 🫀❤️‍🔥"
+                    },
+
+                    {
+                        texto:
+                        "Tú. Siempre tú. 🥺💘"
+                    },
+
+                    {
+                        texto:
+                        "No porque seas la única persona en el mundo, sino porque eres esa persona que consiguió hacer que mi mundo se sintiera diferente. 🌎💗"
+                    },
+
+                    {
+                        texto:
+                        "Y si algún día dudas de lo mucho que significas para mí, recuerda esto: no solamente ocupas un espacio en mis pensamientos… ocupas un pedacito de mi corazón. 🥹❤️‍🩹"
+                    },
+
+                    {
+                        texto:
+                        "Uno de esos lugares que no se le entregan a cualquiera. 🫶🏻🔐💘"
+                    },
+
+                    {
+                        texto:
+                        "Quizá nunca encuentre las palabras perfectas para explicarte todo lo que siento, pero mientras pueda demostrártelo, voy a hacerlo con cada detalle, cada palabra, cada sonrisa y cada momento que podamos compartir. 🌷🥰✨"
+                    },
+
+                    {
+                        texto:
+                        "Porque al final, entre tantas personas, tantos lugares y tantas historias… mi corazón tuvo la suerte de encontrarte a ti. 🥹🫀❤️‍🔥"
+                    },
+
+                    {
+                        texto:
+                        "Y si amar es encontrar un hogar en otra persona, entonces creo que ya sé dónde se siente como casa mi corazón. 🏡💗✨"
+                    },
+
+                    {
+                        texto:
+                        "Directo al corazón: tú. 🥺❤️‍🔥🫶🏻💘🌹✨"
+                    },
+
+                    {
+                        texto:
+                        "A veces me pierdo en mis pensamientos y me encuentro imaginando un futuro donde cada día esté marcado por tu presencia."
+                    },
+
+                    {
+                        texto:
+                        "Un futuro donde cada gesto, cada palabra y cada mirada tuya sean un recordatorio de que los sueños también pueden hacerse realidad. ✨❤️"
+                    },
+
+                    {
+                        texto:
+                        "Porque tú eres uno de mis mayores anhelos, una de las razones por las que mi corazón late con más fuerza incluso en los días difíciles. 🥹❤️‍🔥"
+                    },
+
+                    {
+                        texto:
+                        "No hay un solo momento en el que no desee compartir contigo un pedacito de mi vida."
+                    },
+
+                    {
+                        texto:
+                        "Mi mente te busca, te imagina a mi lado, compartiendo tanto los momentos sencillos como los grandes desafíos que la vida pueda poner frente a nosotros. 🌙🫶🏻"
+                    },
+
+                    {
+                        texto:
+                        "A veces desearía que el tiempo pudiera detenerse, solamente para hacer eterno cada segundo a tu lado. ⏳❤️"
+                    },
+
+                    {
+                        texto:
+                        "Y aunque exista distancia, aunque existan circunstancias que puedan complicarlo todo, quiero seguir encontrando maneras de sentirte cerca. 🥺💞"
+                    },
+
+                    {
+                        texto:
+                        "Cada vez que cierro los ojos, inevitablemente termino pensando en ti y en todo lo que significas para mí. 🌙💭❤️"
+                    },
+
+                    {
+                        texto:
+                        "Eres la calma en mis tormentas, ese refugio donde encuentro un poco de paz cuando el mundo se vuelve caótico. 🫂❤️‍🩹"
+                    },
+
+                    {
+                        texto:
+                        "Pero también eres ese sueño que no quiero dejar de perseguir, esa luz que consigue iluminar mi camino incluso cuando todo parece oscuro. ✨🌹"
+                    },
+
+                    {
+                        texto:
+                        "Desearía que pudieras verte a través de mis ojos para entender lo importante que eres para mí."
+                    },
+
+                    {
+                        texto:
+                        "Para entender cómo tu presencia puede hacer que un día cualquiera se sienta diferente. 🥹💗"
+                    },
+
+                    {
+                        texto:
+                        "Y aunque la vida sea impredecible y a veces las circunstancias parezcan ponerse en nuestro camino, quiero creer que todavía nos esperan momentos que harán que todo tenga sentido. 🌎❤️"
+                    },
+
+                    {
+                        texto:
+                        "No quiero estar solamente en los momentos felices. Quiero estar también cuando las cosas sean difíciles."
+                    },
+
+                    {
+                        texto:
+                        "Quiero estar ahí para ti, como tú has estado para mí, y que juntos podamos construir algo que quizá hoy parezca un sueño, pero que algún día podamos llamar nuestra realidad. 🫶🏻🏡❤️"
+                    },
+
+                    {
+                        texto:
+                        "Tengo que confesarte algo…"
+                    },
+
+                    {
+                        texto:
+                        "No soy perfecto, y tampoco estoy dispuesto a intentar serlo."
+                    },
+
+                    {
+                        texto:
+                        "A lo que sí estoy dispuesto es a entregarte lo mejor de mí cada día."
+                    },
+
+                    {
+                        texto:
+                        "Y cuando haga algo mal, intentar mejorar. Porque no se trata de ser perfectos… se trata de ser reales. ❤️‍🩹"
+                    },
+
+                    {
+                        texto:
+                        "Y, sinceramente… ¿a quién le importa si algún día dejamos de ver la luz del sol, si puedo tenerte a ti antes que cualquier cielo azul? 🌅❤️"
+                    },
+
+                    {
+                        texto:
+                        "Quiero seguir conectado a ti, no por obligación, sino por voluntad."
+                    },
+
+                    {
+                        texto:
+                        "Quiero elegirte porque quiero hacerlo, porque entre tantas personas y tantos caminos, mi corazón sigue encontrando el camino hacia ti. 🫀❤️"
+                    },
+
+                    {
+                        texto:
+                        "Quiero tener el derecho de transformar tu vida para bien, así como tú has transformado la mía sin siquiera darte cuenta. 🥹💗"
+                    },
+
+                    {
+                        texto:
+                        "Quiero vivir sin arrepentirme de nada."
+                    },
+
+                    {
+                        texto:
+                        "Porque las cicatrices se quedan… pero lo importante es cómo decides vivir a partir de hoy. ❤️‍🩹🌹"
+                    },
+
+                    {
+                        texto:
+                        "Y si pudiera pedirle algo a la vida, no pediría una historia perfecta."
+                    },
+
+                    {
+                        texto:
+                        "Pediría más momentos contigo. Más risas. Más conversaciones. Más recuerdos. Más nosotros. 🥹❤️"
+                    },
+
+                    {
+                        texto:
+                        "Porque después de todo lo que hemos vivido, hay algo que tengo bastante claro…"
+                    },
+
+                    {
+                        texto:
+                        "Mi corazón sabe dónde quiere estar. 🫀❤️‍🔥"
+                    },
+
+                    {
+                        texto:
+                        "Contigo. 🥺💗"
+                    },
+
+                    {
+                        texto:
+                        "Hoy, mañana y en cada momento que la vida nos permita compartir. 🌹✨"
+                    }
+
+                ]
+
+            }
+
+        ];
+
+
+        /* ==================================
+           VARIABLES
+        ================================== */
+
+        let escenaActual = 0;
+
+        let mensajeActual = 0;
+
+
+        const titulo =
+            document.getElementById(
+                "titulo"
+            );
+
+
+        const mensaje =
+            document.getElementById(
+                "mensaje"
+            );
+
+
+        const final =
+            document.getElementById(
+                "final"
+            );
+
+
+        const botonSiguiente =
+            document.getElementById(
+                "botonSiguiente"
+            );
+
+
+        /* ==================================
+           MOSTRAR MENSAJE
+        ================================== */
+
+        function mostrarMensaje() {
+
+            const datos =
+                historia[
+                    escenaActual
+                ].mensajes[
+                    mensajeActual
+                ];
+
+
+            titulo.textContent =
+                historia[
+                    escenaActual
+                ].titulo;
+
+
+            mensaje.textContent =
+                datos.texto;
+
+
+            botonSiguiente.classList.remove(
+                "mostrar"
+            );
+
+
+            mensaje.style.animation =
+                "none";
+
+
+            void mensaje.offsetWidth;
+
+
+            mensaje.style.animation =
+                "aparecer 1200ms ease forwards";
+
+
+            setTimeout(function() {
+
+                botonSiguiente.classList.add(
+                    "mostrar"
+                );
+
+            }, 1200);
+
+        }
+
+
+        /* ==================================
+           SIGUIENTE MENSAJE
+        ================================== */
+
+        function siguienteMensaje() {
+
+            botonSiguiente.classList.remove(
+                "mostrar"
+            );
+
+
+            mensaje.style.animation =
+                "desaparecer 700ms ease forwards";
+
+
+            setTimeout(function() {
+
+                mensajeActual++;
+
+
+                if (
+
+                    mensajeActual <
+                    historia[
+                        escenaActual
+                    ].mensajes.length
+
+                ) {
+
+                    mostrarMensaje();
+
+                }
+
+                else {
+
+                    mostrarFinal();
+
+                }
+
+
+            }, 700);
+
+        }
+
+
+        /* ==================================
+           MOSTRAR FINAL
+        ================================== */
+
+        function mostrarFinal() {
+
+            mensaje.style.display =
+                "none";
+
+
+            titulo.style.display =
+                "none";
+
+
+            botonSiguiente.style.display =
+                "none";
+
+
+            final.style.display =
+                "flex";
+
+        }
+
+
+        /* ==================================
+           IR A OTRA PÁGINA
+        ================================== */
+
+        function irSiguientePagina() {
+
+            window.location.href =
+                "pag2.html";
+
+        }
+
+
+        /* ==================================
+           INICIAR HISTORIA
+        ================================== */
+
+        mostrarMensaje();
+
+
+    </script>
+
+
+</body>
+
+</html>

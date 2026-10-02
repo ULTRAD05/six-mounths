@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Seis meses contigo</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+
+            width: 100%;
+            height: 100vh;
+
+            overflow: hidden;
+
+            background: black;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            color: white;
+        }
+
+
+        /* ==================================
+           VIDEO DE FONDO
+        ================================== */
+
+        .fondo {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            z-index: -3;
+        }
+
+
+        /* ==================================
+           OSCURECER VIDEO
+        ================================== */
+
+        .oscuro {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background:
+                rgba(0, 0, 0, 0.42);
+
+            z-index: -2;
+        }
+
+
+        /* ==================================
+           ESCENA
+        ================================== */
+
+        .escena {
+
+            width: 100%;
+            height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+
+            position: relative;
+
+            padding: 40px;
+        }
+
+
+        /* ==================================
+           TITULO
+        ================================== */
+
+        .titulo {
+
+            position: absolute;
+
+            top: 42px;
+
+            left: 0;
+
+            width: 100%;
+
+            font-size: 36px;
+
+            letter-spacing: 5px;
+
+            text-transform: uppercase;
+
+            text-shadow:
+                0 3px 10px black,
+                0 0 20px black;
+        }
+
+
+        /* ==================================
+           MENSAJE
+        ================================== */
+
+        .mensaje {
+
+            width: 900px;
+
+            max-width: 90%;
+
+            background: transparent;
+
+            font-size: 29px;
+
+            line-height: 1.65;
+
+            text-align: center;
+
+            text-shadow:
+                0 3px 10px black,
+                0 0 20px black;
+
+            opacity: 0;
+        }
+
+
+        /* ==================================
+           BOTÓN CONTINUAR
+        ================================== */
+
+        .boton-siguiente {
+
+            position: fixed;
+
+            right: 45px;
+
+            bottom: 45px;
+
+            padding: 14px 32px;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 17px;
+
+            letter-spacing: 2px;
+
+            color: white;
+
+            background:
+                rgba(0, 0, 0, 0.28);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.75);
+
+            border-radius: 50px;
+
+            backdrop-filter: blur(8px);
+
+            cursor: pointer;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition:
+                all 0.35s ease;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0,0,0,0.5);
+        }
+
+
+        .boton-siguiente.mostrar {
+
+            opacity: 1;
+
+            pointer-events: auto;
+
+            animation:
+                pulso 2.5s infinite;
+        }
+
+
+        .boton-siguiente:hover {
+
+            background:
+                rgba(255,255,255,0.14);
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 8px 30px
+                rgba(255,255,255,0.18);
+        }
+
+
+        .boton-siguiente:active {
+
+            transform:
+                scale(0.94);
+        }
+
+
+        /* ==================================
+           BRILLO DEL BOTÓN
+        ================================== */
+
+        @keyframes pulso {
+
+            0% {
+
+                box-shadow:
+                    0 5px 25px
+                    rgba(0,0,0,0.5);
+            }
+
+            50% {
+
+                box-shadow:
+                    0 5px 30px
+                    rgba(255,255,255,0.18);
+            }
+
+            100% {
+
+                box-shadow:
+                    0 5px 25px
+                    rgba(0,0,0,0.5);
+            }
+        }
+
+
+        /* ==================================
+           APARECER
+        ================================== */
+
+        @keyframes aparecer {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(30px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        /* ==================================
+           DESAPARECER
+        ================================== */
+
+        @keyframes desaparecer {
+
+            from {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+
+            to {
+
+                opacity: 0;
+
+                transform:
+                    translateY(-30px);
+            }
+        }
+
+
+        /* ==================================
+           FINAL
+        ================================== */
+
+        .final {
+
+            display: none;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 30px;
+        }
+
+
+        .final h1 {
+
+            font-size: 70px;
+
+            letter-spacing: 10px;
+
+            text-shadow:
+                0 5px 20px black;
+
+            animation:
+                aparecer 2s ease forwards;
+        }
+
+
+        /* ==================================
+           BOTÓN FINAL
+        ================================== */
+
+        .boton-final {
+
+            padding: 15px 40px;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 18px;
+
+            color: white;
+
+            background:
+                rgba(0,0,0,0.30);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.8);
+
+            border-radius: 40px;
+
+            cursor: pointer;
+
+            backdrop-filter: blur(6px);
+
+            transition: 0.35s;
+        }
+
+
+        .boton-final:hover {
+
+            background:
+                rgba(255,255,255,0.15);
+
+            transform:
+                scale(1.08);
+
+            box-shadow:
+                0 8px 30px
+                rgba(255,255,255,0.15);
+        }
+
+
+        /* ==================================
+           CELULAR
+        ================================== */
+
+        @media(max-width:700px) {
+
+            .escena {
+
+                padding: 25px;
+            }
+
+
+            .titulo {
+
+                font-size: 24px;
+
+                top: 30px;
+
+                letter-spacing: 3px;
+            }
+
+
+            .mensaje {
+
+                font-size: 21px;
+
+                line-height: 1.55;
+
+                max-width: 88%;
+            }
+
+
+            .boton-siguiente {
+
+                right: 50%;
+
+                bottom: 25px;
+
+                transform:
+                    translateX(50%);
+
+                font-size: 16px;
+
+                padding:
+                    12px 26px;
+            }
+
+
+            .boton-siguiente:hover {
+
+                transform:
+                    translateX(50%)
+                    translateY(-4px);
+            }
+
+
+            .final h1 {
+
+                font-size: 48px;
+
+                letter-spacing: 7px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==================================
+         VIDEO DE FONDO
+    ================================== -->
+
+    <video
+        class="fondo"
+        autoplay
+        muted
+        loop
+        playsinline>
+
+        <source
+            src="2026-08-04 21-41-16.mp4"
+            type="video/mp4">
+
+    </video>
+
+
+    <!-- ==================================
+         AUDIO
+    ================================== -->
+
+    <audio
+        id="musica"
+        loop
+        preload="auto">
+
+        <source
+            src="musica para dormir en 30 segundos,musica ambiental 30 segundos,musica corta relajante,relajarse.mp3"
+            type="audio/mpeg">
+
+    </audio>
+
+
+    <div class="oscuro"></div>
+
+
+    <!-- ==================================
+         ESCENA
+    ================================== -->
+
+    <main class="escena">
+
+        <h1
+            class="titulo"
+            id="titulo">
+
+            Seis meses contigo
+
+        </h1>
+
+
+        <div
+            class="mensaje"
+            id="mensaje">
+        </div>
+
+
+        <button
+            class="boton-siguiente"
+            id="botonSiguiente"
+            onclick="siguienteMensaje()">
+
+            Continuar →
+
+        </button>
+
+
+        <!-- ==================================
+             FINAL
+        ================================== -->
+
+        <div
+            class="final"
+            id="final">
+
+            <h1>
+                6 MESES
+            </h1>
+
+
+            <button
+                class="boton-final"
+                onclick="volverInicio()">
+
+                Volver a nuestra historia →
+
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+
+        /* ==================================
+           AUDIO
+        ================================== */
+
+        const musica =
+            document.getElementById("musica");
+
+
+        /*
+           Volumen al 30%
+        */
+
+        musica.volume = 0.3;
+
+
+        /*
+           Iniciar música con el primer clic.
+        */
+
+        function iniciarMusica() {
+
+            if (musica.paused) {
+
+                musica.volume = 0.3;
+
+                musica.play().catch(function(error) {
+
+                    console.log(
+                        "El navegador bloqueó el audio:",
+                        error
+                    );
+
+                });
+
+            }
+
+        }
+
+
+        /*
+           Cualquier clic de la página
+           inicia la música.
+
+           Después del primer clic,
+           este evento se elimina.
+        */
+
+        document.addEventListener(
+            "click",
+            iniciarMusica,
+            {
+                once: true
+            }
+        );
+
+
+        /* ==================================
+           MENSAJES DEL ANIVERSARIO
+        ================================== */
+
+        const mensajes = [
+
+            "Seis meses… seis meses desde que comenzamos a escribir esta pequeña historia juntos. 🥹❤️",
+
+            "Quizá para algunas personas seis meses parezcan poco tiempo, pero para mí han sido suficientes para guardar recuerdos que significan muchísimo. 🌹✨",
+
+            "Hoy quiero aprovechar este día para decirte algo que quizá no digo todas las veces que debería: gracias. ❤️",
+
+            "Gracias por seguir aquí, por elegirme incluso con todos mis defectos, mis errores, mis momentos difíciles y todas esas partes de mí que todavía estoy intentando mejorar. 🥹❤️‍🩹",
+
+            "Sé que no soy perfecto. Sé que tengo defectos, que puedo equivocarme y que algunas veces puedo hacer las cosas de una manera que no debería.",
+
+            "Pero aun así, tú decidiste darme la oportunidad de estar a tu lado. Y créeme… esa oportunidad significa muchísimo para mí. 🫶🏻❤️",
+
+            "No quiero fingir ser alguien perfecto para ti. Quiero ser yo, con mis virtudes y mis defectos, pero siempre intentando darte una versión mejor de mí. 🌷",
+
+            "Porque estar contigo me ha hecho entender que amar no significa encontrar a alguien perfecto. Significa encontrar a alguien por quien vale la pena quedarse y seguir intentando. ❤️‍🩹",
+
+            "Y yo quiero seguir intentando contigo.",
+
+            "No quiero ponerle una fecha límite a lo nuestro. 🥺",
+
+            "No quiero pensar en cuánto tiempo debería durar, ni contar los días que faltan para que una historia tenga que terminar.",
+
+            "Lo único que quiero es seguir compartiendo contigo todo el tiempo que la vida nos permita. ❤️",
+
+            "No sé qué nos espera mañana. No sé qué caminos tomaremos, qué dificultades aparecerán o qué cambios traerá la vida.",
+
+            "Pero mientras podamos elegirnos, quiero elegirte.",
+
+            "Quiero estar contigo hasta que la vida, por cualquier motivo que no podamos controlar, decida separar nuestros caminos.",
+
+            "Y quizá suene un poco egoísta… pero quiero permitirme serlo contigo, aunque sea un poquito. 🥹❤️",
+
+            "Quiero guardar momentos contigo. Quiero más fotografías, más conversaciones, más risas, más noches hablando de cualquier cosa y más recuerdos que algún día podamos mirar y decir: '¿te acuerdas de esto?'. 🥰📸",
+
+            "Quiero ser un poquito egoísta y pedirte más tiempo, más momentos y más oportunidades para seguir conociéndote.",
+
+            "No porque quiera poseerte, sino porque realmente aprecio tenerte en mi vida. ❤️",
+
+            "Porque desde que llegaste, hay partes de mi vida que comenzaron a tener una luz diferente.",
+
+            "Has iluminado mi vida de una manera que probablemente nunca podré explicar completamente con palabras. ✨🌹",
+
+            "Hay días en los que quizá no te das cuenta de lo mucho que significas para mí.",
+
+            "Pero quiero que sepas que tu presencia puede cambiar completamente mi día. Una conversación contigo, una sonrisa tuya o simplemente saber que estás ahí puede hacer que todo se sienta un poco más bonito. 🥹💗",
+
+            "Y por eso te aprecio muchísimo.",
+
+            "Aprecio tu paciencia conmigo. Aprecio tus detalles. Aprecio tus palabras. Aprecio cada momento que decides compartir conmigo.",
+
+            "Aprecio incluso las pequeñas cosas que quizá tú consideras insignificantes, porque cuando vienen de ti, para mí dejan de ser pequeñas. ❤️",
+
+            "Estos seis meses no solamente representan una cantidad de tiempo.",
+
+            "Representan conversaciones, risas, momentos difíciles, momentos bonitos, aprendizajes, recuerdos y una persona que poco a poco se volvió demasiado importante para mí. 🫶🏻",
+
+            "Y esa persona eres tú.",
+
+            "Si pudiera pedir algo para los próximos meses, no pediría una relación perfecta.",
+
+            "Pediría que sigamos siendo nosotros.",
+
+            "Que sigamos aprendiendo el uno del otro.",
+
+            "Que podamos equivocarnos y aprender.",
+
+            "Que podamos reírnos juntos hasta que nos duela el estómago.",
+
+            "Que podamos apoyarnos cuando las cosas se pongan difíciles.",
+
+            "Y que podamos seguir creando pequeños momentos que algún día se conviertan en grandes recuerdos. ❤️",
+
+            "Seis meses pueden ser solamente seis meses en un calendario…",
+
+            "pero para mí son seis meses en los que tuve la suerte de compartir una parte de mi vida contigo.",
+
+            "Y sinceramente, no cambiaría esa oportunidad por nada. 🥹❤️‍🔥",
+
+            "Gracias por estar conmigo.",
+
+            "Gracias por aceptar mis defectos.",
+
+            "Gracias por darme una oportunidad.",
+
+            "Gracias por formar parte de mi vida.",
+
+            "Gracias por iluminarla de una forma tan bonita.",
+
+            "Y sobre todo… gracias por estos seis meses. ❤️🌹",
+
+            "No sé cuánto tiempo nos dará la vida.",
+
+            "Pero mientras pueda elegir, quiero seguir caminando a tu lado.",
+
+            "Sin fechas límite.",
+
+            "Sin contar cuánto falta.",
+
+            "Sin preocuparme por cuándo terminará.",
+
+            "Solamente disfrutando de cada momento que tengamos. 🥹❤️",
+
+            "Porque si estos seis meses me han enseñado algo, es que hay personas que llegan a tu vida y simplemente consiguen hacerla un poquito más bonita.",
+
+            "Y para mí, tú eres una de esas personas.",
+
+            "Te aprecio muchísimo. ❤️",
+
+            "Feliz sexto mes, mi amor. 🥹❤️‍🔥🌹",
+
+            "Y si me preguntas qué quiero después de estos seis meses…",
+
+            "La respuesta es sencilla:",
+
+            "Quiero más tiempo contigo. ❤️",
+
+            "Mucho más."
+
+        ];
+
+
+        /* ==================================
+           VARIABLES
+        ================================== */
+
+        let mensajeActual = 0;
+
+
+        const titulo =
+            document.getElementById(
+                "titulo"
+            );
+
+
+        const mensaje =
+            document.getElementById(
+                "mensaje"
+            );
+
+
+        const botonSiguiente =
+            document.getElementById(
+                "botonSiguiente"
+            );
+
+
+        const final =
+            document.getElementById(
+                "final"
+            );
+
+
+        /* ==================================
+           MOSTRAR MENSAJE
+        ================================== */
+
+        function mostrarMensaje() {
+
+            mensaje.textContent =
+                mensajes[
+                    mensajeActual
+                ];
+
+
+            botonSiguiente.classList.remove(
+                "mostrar"
+            );
+
+
+            mensaje.style.animation =
+                "none";
+
+
+            void mensaje.offsetWidth;
+
+
+            mensaje.style.animation =
+                "aparecer 1200ms ease forwards";
+
+
+            setTimeout(function() {
+
+                botonSiguiente.classList.add(
+                    "mostrar"
+                );
+
+            }, 1200);
+
+        }
+
+
+        /* ==================================
+           SIGUIENTE MENSAJE
+        ================================== */
+
+        function siguienteMensaje() {
+
+            botonSiguiente.classList.remove(
+                "mostrar"
+            );
+
+
+            mensaje.style.animation =
+                "desaparecer 700ms ease forwards";
+
+
+            setTimeout(function() {
+
+                mensajeActual++;
+
+
+                if (
+                    mensajeActual <
+                    mensajes.length
+                ) {
+
+                    mostrarMensaje();
+
+                }
+
+                else {
+
+                    mostrarFinal();
+
+                }
+
+            }, 700);
+
+        }
+
+
+        /* ==================================
+           FINAL
+        ================================== */
+
+        function mostrarFinal() {
+
+            mensaje.style.display =
+                "none";
+
+
+            titulo.style.display =
+                "none";
+
+
+            botonSiguiente.style.display =
+                "none";
+
+
+            final.style.display =
+                "flex";
+
+        }
+
+
+        /* ==================================
+           VOLVER AL INICIO
+        ================================== */
+
+        function volverInicio() {
+
+            window.location.href =
+                "index.html";
+
+        }
+
+
+        /* ==================================
+           INICIAR
+        ================================== */
+
+        mostrarMensaje();
+
+
+    </script>
+
+
+</body>
+
+</html>
